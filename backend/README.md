@@ -51,6 +51,19 @@ This command will start the FastAPI application with hot reloading enabled.
 After starting the application, you can access the API at `http://127.0.0.1:8000`. The API endpoints include:
 
 - `/configuration/aws/<servicename>/`: Interacts with aws service api.
+- `/operations/aws/<servicename>`: intertacts with the data collected in configurations
+- `self/config/iam ` : add session keys to the backend API 
+
+Example for adding seesssion keys format
+```
+curl -X POST http://127.0.0.1:8000/self/config/iam \
+    -H "Content-Type: application/json" \
+    -d '{
+        "access_key_id": "your_aws_access_key_id",
+        "secret_access_key": "your_aws_secret_access_key",
+        "session_token": "your_aws_session_token"
+    }'
+```
 
 ## License
 

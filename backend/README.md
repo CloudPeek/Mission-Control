@@ -17,7 +17,7 @@ project_root/
 ├── main.py             # Main FastAPI application entry point
 └── config/
     ├── __init__.py     # Makes config a Python package
-    ├── configuration/
+    ├── configuration/  # Get configuration from cloud providers
         ├── __init__.py # Makes configuration a sub-package within config
         └── aws/
             ├── __init__.py # Makes aws a sub-package within configuration

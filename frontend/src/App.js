@@ -7,6 +7,10 @@ import AWSSecOps from './awsSecOps';
 import AWSServiceView from './awsServicesView'; // Adjust the import path as necessary
 import './App.css'; // Ensure the CSS path is correct
 import { StepProvider } from './StepContext'; // Adjust the import path as necessary
+import ConfigPage from './settings/SetIAMCREDS';
+import { CurrentIAMRole } from './settings/CurrentIAMRole';
+
+
 
 function App() {
   return (
@@ -20,6 +24,8 @@ function App() {
               <Route path="/awsOperations" element={<AWSOperations />} />
               <Route path="/awsSecOps" element={<AWSSecOps />} />
               <Route path='/awsServiceView' element={<AWSServiceView />} />
+              <Route path='/setIAM' element={<ConfigPage />}/>
+              <Route path='/currentIAM' element={<CurrentIAMRole />}/>
             </Routes>
           </div>
         </div>

@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 import boto3
@@ -44,22 +44,26 @@ def create_boto_session():
         return boto3.Session(profile_name='default')  # Use a default session if specific credentials are not provided
 
 bucket_name = 'cloudstatustesting'  # Replace with your actual S3 bucket name
-
 @app.post("/self/config/iam")
-async def set_aws_credentials(credentials: AWSCredentials):
+async def set_aws_credentials(credentials: AWSCredentials, request: Request):
+    # Log the incoming request data
+    request_data = await request.json()  # Asynchronously get the JSON data from the request
+    logger.info(f"Received request with data: {request_data}")
+
+    if credentials.access_key_id == "test" and credentials.secret_access_key == "test1" and credentials.session_token == "test2":
+        logger.info("Using test credentials, skipping AWS validation.")
+        return {"message": "Test credentials received, skipping AWS validation."}
+
     try:
-        # Initialize a new Boto3 session with the provided credentials
         session = boto3.Session(
             aws_access_key_id=credentials.access_key_id,
             aws_secret_access_key=credentials.secret_access_key,
             aws_session_token=credentials.session_token
         )
-        # Verify the session by getting the AWS caller identity
         sts_client = session.client('sts')
         caller_identity = sts_client.get_caller_identity()
         logger.info(f"Caller Identity: {caller_identity}")
 
-        # Optionally write the credentials to a file
         with open(".aws_credentials", "w") as file:
             file.write(f'AWS_ACCESS_KEY_ID={credentials.access_key_id}\n')
             file.write(f'AWS_SECRET_ACCESS_KEY={credentials.secret_access_key}\n')
@@ -69,6 +73,21 @@ async def set_aws_credentials(credentials: AWSCredentials):
     except Exception as e:
         logger.error(f"Failed to write or verify AWS credentials: {str(e)}")
         raise HTTPException(status_code=500, detail="Failed to write or verify AWS credentials")
+
+@app.get("/self/config/getiam")
+async def get_iam_role():
+    session = create_boto_session()
+    if not session:
+        logger.error("Failed to create AWS session")
+        raise HTTPException(status_code=500, detail="Failed to create AWS session")
+
+    try:
+        sts_client = session.client('sts')
+        caller_identity = sts_client.get_caller_identity()
+        return {"Account": caller_identity['Account'], "UserId": caller_identity['UserId'], "Arn": caller_identity['Arn']}
+    except Exception as e:
+        logger.error(f"Failed to get IAM role: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to get IAM role")
 
 @app.get("/configuration/aws/{service}")
 async def get_aws_configuration(service: str):

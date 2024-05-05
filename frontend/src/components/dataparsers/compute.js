@@ -44,3 +44,5 @@ export async function fetchComputeCombinedDetails() {
     console.log("Processed combined storage details:", combinedDetails);
     return combinedDetails;
 }
+
+

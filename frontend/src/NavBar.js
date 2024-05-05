@@ -15,12 +15,17 @@ const navigation = [
   { name: 'Operations', href: '/awsOperations', icon: CloudIcon, current: false },
   { name: 'Secruity', href: '/awsSecOps', icon: ShieldExclamationIcon, current: false },
   { name: 'Best Practice', href: '/gcp', icon: CodeBracketIcon, current: false },
-  { name: 'Service Overview', href: '/awsServiceView', icon: Squares2X2Icon, current: false}
+  { name: 'Service Overview', href: '/awsServiceView', icon: Squares2X2Icon, current: false},
+  { name: 'Settings', href: '/UserConfiguration', icon: Squares2X2Icon, current: false}
 ]
 const frameworks = [
   { id: 1, name: 'NIST 800-171', href: '#', initial: '171', current: false },
   { id: 2, name: 'NIST CSF', href: '#', initial: 'CSF', current: false },
   { id: 3, name: 'ISO 20071', href: '#', initial: 'ISO', current: false },
+]
+const Configuration =[
+  {config: 1, name: 'Set IAM Role', href: '/setIAM', initial: 'IAM', current: false},
+  {config: 2, name: 'Current Role', href: '/currentIAM', initial: 'IAM', current: false},
 ]
 
 function classNames(...classes) {
@@ -120,6 +125,29 @@ export default function Sidebar() {
                           </ul>
                         </li>
                         <li>
+                          <div className="text-xs font-semibold leading-6 text-indigo-200">Cyber Framework Anaylsis</div>
+                          <ul role="list" className="-mx-2 mt-2 space-y-1">
+                            {Configuration.map((team) => (
+                              <li key={team.name}>
+                                <a
+                                  href={team.href}
+                                  className={classNames(
+                                    team.current
+                                      ? 'bg-indigo-700 text-white'
+                                      : 'text-indigo-200 hover:text-white hover:bg-indigo-700',
+                                    'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
+                                  )}
+                                >
+                                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-indigo-400 bg-indigo-500 text-[0.625rem] font-medium text-white">
+                                    {team.initial}
+                                  </span>
+                                  <span className="truncate">{team.name}</span>
+                                </a>
+                              </li>
+                            ))}
+                          </ul>
+                        </li>
+                        <li>
                           <div className="text-xs font-semibold leading-6 text-indigo-200">Your teams</div>
                           <ul role="list" className="-mx-2 mt-2 space-y-1">
                             {frameworks.map((team) => (
@@ -213,6 +241,29 @@ export default function Sidebar() {
                     ))}
                   </ul>
                 </li>
+                <li>
+                  <div className="text-xs font-semibold leading-6 text-indigo-200">Settings</div>
+                  <ul role="list" className="-mx-2 mt-2 space-y-1">
+                    {Configuration.map((team) => (
+                      <li key={team.name}>
+                        <a
+                          href={team.href}
+                          className={classNames(
+                            team.current
+                              ? 'bg-indigo-700 text-white'
+                              : 'text-indigo-200 hover:text-white hover:bg-indigo-700',
+                            'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
+                          )}
+                        >
+                          <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-indigo-400 bg-indigo-500 text-[0.625rem] font-medium text-white">
+                            {team.initial}
+                          </span>
+                          <span className="truncate">{team.name}</span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
                 <li className="-mx-6 mt-auto">
                   <a
                     href="#"
@@ -224,6 +275,7 @@ export default function Sidebar() {
                   </a>
                 </li>
               </ul>
+              
             </nav>
           </div>
         </div>

@@ -1,6 +1,8 @@
 import React, { Suspense } from 'react';
 import { useStep } from './StepContext';
 import { UsersIcon, AcademicCapIcon, ClockIcon } from '@heroicons/react/24/outline';
+import HomeBar from './HomeBar';
+
 
 const MetricView = React.lazy(() => import('./components/metricViewOps'));
 const DetailedView = React.lazy(() => import('./components/detailedViewOps'));
@@ -18,6 +20,7 @@ function AWSOperations() {
   // Render tabs instead of a list for step navigation
   return (
     <div>
+      
       <div className="hidden sm:block">
         <nav className="flex space-x-4" aria-label="Tabs">
           {steps.map((step) => (

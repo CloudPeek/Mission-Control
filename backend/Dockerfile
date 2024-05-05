@@ -1,11 +1,17 @@
-FROM python:3.9
+# Use a base image
+FROM python:3.9-slim
 
-WORKDIR /code
+# Set the working directory
+WORKDIR /app
 
-COPY ./requirements.txt /code/requirements.txt
+# Copy the source code to the container
+COPY . .
 
-RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
+# Install dependencies
+RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . /code/app
+# Expose the port
+EXPOSE 8000
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Define the command to run the application
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

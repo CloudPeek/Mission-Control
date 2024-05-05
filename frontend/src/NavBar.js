@@ -11,17 +11,16 @@ import {
 } from '@heroicons/react/24/outline'
 
 const navigation = [
-  { name: 'Dashboard', href: '/', icon: PresentationChartBarIcon , current: true },
+  { name: 'Home', href: '/', icon: PresentationChartBarIcon , current: true },
   { name: 'Operations', href: '/awsOperations', icon: CloudIcon, current: false },
-  { name: 'Secruity', href: '/awsSecOps', icon: ShieldExclamationIcon, current: false },
-  { name: 'Best Practice', href: '/gcp', icon: CodeBracketIcon, current: false },
-  { name: 'Service Overview', href: '/awsServiceView', icon: Squares2X2Icon, current: false},
-  { name: 'Settings', href: '/UserConfiguration', icon: Squares2X2Icon, current: false}
+  { name: 'Secruity', href: '/404', icon: ShieldExclamationIcon, current: false },
+  { name: 'Best Practice', href: '/404', icon: CodeBracketIcon, current: false },
+  { name: 'Service Overview', href: '/404', icon: Squares2X2Icon, current: false}
 ]
 const frameworks = [
-  { id: 1, name: 'NIST 800-171', href: '#', initial: '171', current: false },
-  { id: 2, name: 'NIST CSF', href: '#', initial: 'CSF', current: false },
-  { id: 3, name: 'ISO 20071', href: '#', initial: 'ISO', current: false },
+  { id: 1, name: 'NIST 800-171', href: '/404', initial: '171', current: false },
+  { id: 2, name: 'NIST CSF', href: '/404', initial: 'CSF', current: false },
+  { id: 3, name: 'ISO 20071', href: '/404', initial: 'ISO', current: false },
 ]
 const Configuration =[
   {config: 1, name: 'Set IAM Role', href: '/setIAM', initial: 'IAM', current: false},

@@ -1,7 +1,6 @@
 import React, { Suspense } from 'react';
 import { useStep } from './StepContext';
 import { UsersIcon, AcademicCapIcon, ClockIcon } from '@heroicons/react/24/outline';
-import HomeBar from './HomeBar';
 
 
 const MetricView = React.lazy(() => import('./components/metricViewOps'));

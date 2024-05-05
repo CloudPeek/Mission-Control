@@ -9,6 +9,7 @@ import './App.css'; // Ensure the CSS path is correct
 import { StepProvider } from './StepContext'; // Adjust the import path as necessary
 import ConfigPage from './settings/SetIAMCREDS';
 import { CurrentIAMRole } from './settings/CurrentIAMRole';
+import NotFound from './404'; // Adjust the import path as necessary
 
 
 
@@ -26,6 +27,7 @@ function App() {
               <Route path='/awsServiceView' element={<AWSServiceView />} />
               <Route path='/setIAM' element={<ConfigPage />}/>
               <Route path='/currentIAM' element={<CurrentIAMRole />}/>
+              <Route path='/404' element={<NotFound />} />
             </Routes>
           </div>
         </div>

@@ -5,8 +5,9 @@ import boto3
 import json
 import logging
 from fastapi.middleware.cors import CORSMiddleware
-from configuration.aws import s3 as s3_audit, ec2, ebs, vpc, security_groups, iam
-from operations.aws import s3, all,ebs,ec2
+from configuration.aws import conf_billling, conf_ebs, conf_ec2, conf_iam, conf_s3 as s3_audit, conf_security_groups
+from configuration.aws import conf_vpc
+from operations.aws import ops_s3, ops_all, ops_ebs, ops_ec2, ops_billing
 
 # Setup the logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -99,11 +100,12 @@ async def get_aws_configuration(service: str):
 
     service_map = {
         "s3": s3_audit.audit_s3_buckets,
-        "ec2": ec2.audit_ec2_instances,
-        "ebs": ebs.audit_ebs_volumes,
-        "vpc": vpc.audit_vpc,
-        "sg": security_groups.audit_security_groups,
-        "iam": iam.audit_iam_practices,
+        "ec2": conf_ec2.audit_ec2_instances,
+        "ebs": conf_ebs.audit_ebs_volumes,
+        "vpc": conf_vpc.audit_vpc,
+        "sg": conf_security_groups.audit_security_groups,
+        "iam": conf_iam.audit_iam_practices,
+        "billing": conf_billling.get_billing,
     }
 
     if service not in service_map:
@@ -133,10 +135,11 @@ async def get_ops_data(service: str):
         logger.error("Failed to create AWS session")
         raise HTTPException(status_code=500, detail="Failed to create AWS session")
     service_map = {
-        "s3": s3.read_s3_config,  # Assuming read_s3_config is correctly accepting required parameters
-        "all": all.list_aws_configurations,
-        "ebs": ebs.read_ebs_config,  # This needs correction
-        "ec2": ec2.read_ec2_config
+        "s3": ops_s3.read_s3_config,  # Assuming read_s3_config is correctly accepting required parameters
+        "all": ops_all.list_aws_configurations,
+        "ebs": ops_ebs.read_ebs_config,  # This needs correction
+        "ec2": ops_ec2.read_ec2_config,
+        "billing": ops_billing.fetch_billing_info,
     }
 
     if service not in service_map:
@@ -151,7 +154,7 @@ async def get_ops_data(service: str):
         elif service == 'ec2':
             config_data = service_map[service](session, bucket_name)
         else:
-            config_data = service_map[service](session, service, bucket_name)  # Assuming other functions need 'service'
+            config_data = service_map[service](session, bucket_name)  # Assuming other functions need 'service'
         return JSONResponse(content=config_data)
     except HTTPException as http_err:
         raise HTTPException(status_code=http_err.status_code, detail=http_err.detail)

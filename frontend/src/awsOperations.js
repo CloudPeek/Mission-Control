@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react';
 import { useStep } from './StepContext';
 import { UsersIcon, AcademicCapIcon, ClockIcon } from '@heroicons/react/24/outline';
+import { CurrencyDollarIcon } from '@heroicons/react/20/solid';
 
 
 const MetricView = React.lazy(() => import('./components/metricViewOps'));
@@ -14,6 +15,7 @@ function AWSOperations() {
     { id: 'Storage', icon: AcademicCapIcon },
     { id: 'Compute', icon: ClockIcon },
     { id: 'IAM', icon: ClockIcon },
+    { id: 'Billing', icon: CurrencyDollarIcon}
   ];
 
   // Render tabs instead of a list for step navigation

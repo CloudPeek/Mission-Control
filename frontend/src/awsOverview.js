@@ -1,67 +1,60 @@
-import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/20/solid'
-import { CursorArrowRaysIcon, EnvelopeOpenIcon, UsersIcon } from '@heroicons/react/24/outline'
-import React from 'react';
-import './output.css';
-import './App.js'
 
-const stats = [
-  { id: 1, name: 'AWS Accounts', stat: '3', icon: UsersIcon,  changeType: 'increase' },
-  { id: 2, name: 'Operational Issuies', stat: '1', icon: EnvelopeOpenIcon,  changeType: 'increase' },
-  { id: 3, name: 'Secruity Issu', stat: '0', icon: CursorArrowRaysIcon,  changeType: 'decrease' },
-  { id: 4, name: 'ISO 20071 nonconformaties', stat: '3', icon: UsersIcon,  changeType: 'increase' },
-  { id: 5, name: 'NIST CSF nonconformaties', stat: '1', icon: EnvelopeOpenIcon,  changeType: 'increase' },
-  { id: 6, name: 'Nist 800-171 nonconformaties', stat: '0', icon: CursorArrowRaysIcon,  changeType: 'decrease' },
-]
+import React, { useState, useEffect } from 'react';
+import { fetchBillingDetails } from './components/dataparsers/billing'; // Adjust the import path as necessary
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
-}
+export default function Home() {
+  const [stats, setStats] = useState([
+    { id: 1, name: 'Number of accounts monitored', value: '1' },
+    { id: 3, name: 'Number of Services Used', value: 'Loading...' },
+    { id: 4, name: 'Best Practice & Secruity improvements detected', value: '43' },
+    { id: 6, name: 'Total Cost', value: 'Loading...' }, // Added Total Cost stat
+  ]);
 
-export default function AWSOverviewStats() {
+  useEffect(() => {
+    async function loadBillingStats() {
+      const billingDetails = await fetchBillingDetails();
+      const numberOfServices = billingDetails.length;
+      const totalCost = billingDetails.reduce((acc, detail) => acc + parseFloat(detail.TotalCost), 0).toFixed(2);
+
+      // Update the stats with real data
+      setStats(prevStats => prevStats.map(stat => {
+        if (stat.name === 'Number of Services Used') {
+          return { ...stat, value: numberOfServices.toString() };
+        } else if (stat.name === 'Total Cost') {
+          return { ...stat, value: `$${totalCost}` }; // Format as currency
+        }
+        return stat;
+      }));
+    }
+
+    loadBillingStats();
+  }, []);
+
   return (
-    <div>
-      <h3 className="text-base font-semibold leading-6 text-gray-900">Cloud Posture Status</h3>
-
-      <dl className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {stats.map((item) => (
-          <div
-            key={item.id}
-            className="relative overflow-hidden rounded-lg bg-white px-4 pb-12 pt-5 shadow sm:px-6 sm:pt-6"
-          >
-            <dt>
-              <div className="absolute rounded-md bg-indigo-500 p-3">
-                <item.icon className="h-6 w-6 text-white" aria-hidden="true" />
-              </div>
-              <p className="ml-16 truncate text-sm font-medium text-gray-500">{item.name}</p>
-            </dt>
-            <dd className="ml-16 flex items-baseline pb-6 sm:pb-7">
-              <p className="text-2xl font-semibold text-gray-900">{item.stat}</p>
-              <p
-                className={classNames(
-                  item.changeType === 'increase' ? 'text-green-600' : 'text-red-600',
-                  'ml-2 flex items-baseline text-sm font-semibold'
-                )}
-              >
-                {item.changeType === 'increase' ? (
-                  <ArrowUpIcon className="h-5 w-5 flex-shrink-0 self-center text-green-500" aria-hidden="true" />
-                ) : (
-                  <ArrowDownIcon className="h-5 w-5 flex-shrink-0 self-center text-red-500" aria-hidden="true" />
-                )}
-
-                <span className="sr-only"> {item.changeType === 'increase' ? 'Increased' : 'Decreased'} by </span>
-                {item.change}
-              </p>
-              <div className="absolute inset-x-0 bottom-0 bg-gray-50 px-4 py-4 sm:px-6">
-                <div className="text-sm">
-                  <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
-                    View all<span className="sr-only"> {item.name} stats</span>
-                  </a>
-                </div>
-              </div>
-            </dd>
+    <div className="bg-white py-24 sm:py-32">
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="mx-auto max-w-2xl lg:max-w-none">
+          <div className="text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+              Cloud Peek Mission Control Platform
+            </h2>
+            <p className="mt-4 text-lg leading-8 text-gray-600">
+              The platform teams front door into there AWS environment.
+            </p>
+            <p className="mt-4 text-lg leading-8 text-gray-600">
+              Your environment at a glance.
+            </p>
           </div>
-        ))}
-      </dl>
+          <dl className="mt-16 grid grid-cols-1 gap-0.5 overflow-hidden rounded-2xl text-center sm:grid-cols-2 lg:grid-cols-4">
+            {stats.map((stat) => (
+              <div key={stat.id} className="flex flex-col bg-gray-400/5 p-8">
+                <dt className="text-sm font-semibold leading-6 text-gray-600">{stat.name}</dt>
+                <dd className="order-first text-3xl font-semibold tracking-tight text-gray-900">{stat.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </div>
     </div>
   )
 }

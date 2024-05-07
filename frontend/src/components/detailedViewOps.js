@@ -5,6 +5,7 @@ import { PaperClipIcon } from '@heroicons/react/20/solid'
 import { useStep } from '../StepContext';
 import { fetchStorageCombinedDetails, fetchS3Details, fetchEbsDetails } from './dataparsers/storage';
 import { fetchComputeCombinedDetails, fetchEC2Details } from './dataparsers/compute';
+import { fetchBillingDetails } from './dataparsers/billing';
 import {typography}  from '@tailwindcss/typography';
 
 function DetailedView() {
@@ -24,6 +25,9 @@ function DetailedView() {
                 case 'Compute':
                     data = await fetchComputeCombinedDetails();
                     break;
+                case 'Billing':
+                    data = await fetchBillingDetails();
+                    break;
                 default:
                     data = []; // No data for other tabs
             }
@@ -41,7 +45,10 @@ function DetailedView() {
             info = await fetchEbsDetails();
         } else if (detail.Service === 'EC2') {
             info = await fetchEC2Details();
+        }else if (detail.Service === 'Billing') {
+            info = await fetchBillingDetails();
         }
+
         console.log("Fetched details for modal:", info); // Check what is being fetched
         const foundDetail = info.find(d => d.Name === detail.ResourceName) || {};
         console.log("Found detail for modal:", foundDetail); // Check what is being found

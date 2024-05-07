@@ -14,7 +14,7 @@ def get_account_id(session):
     account_id = caller_identity['Account']
     return account_id
 
-def read_s3_config(session, service, bucket_name):
+def read_s3_config(session,  bucket_name):
     """
     Reads a configuration file from an S3 bucket based on the AWS account ID and service type,
     then reformats the data into a specified structure using a dictionary with bucket names as keys.

@@ -24,6 +24,7 @@ Cloud Peek currently offers operational insights and management tools for the fo
 ## Future Developments
 
 Looking ahead, Cloud Peek Mission Control plans to expand its capabilities to encompass more AWS services and deeper integrations with the AWS Well-Architected Tool. Future updates aim to include:
+- Multi account handling, to enable AWS organisations 
 - Enhanced support for AWS Lambda, Amazon RDS, and Amazon VPC.
 - Integration with additional compliance frameworks to provide broader security assurance and compliance checking.
 - Advanced predictive analytics to forecast costs and usage patterns.
